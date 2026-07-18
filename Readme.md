@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Николай Кучумов](https://up.htmlacademy.ru/javascript-individual/3/user/2693979).
-* Наставник: `Неизвестно`.
+* Наставник: [Анастасия Гущина](https://htmlacademy.ru/profile/vanastasiya).
 
 ---
 
