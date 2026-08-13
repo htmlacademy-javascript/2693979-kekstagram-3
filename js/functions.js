@@ -1,5 +1,5 @@
-const stringLengthValidation = (string, maxLength) => string.length <= maxLength;
-stringLengthValidation('проверяемая строка', 20);
+const checkStringLength = (string, maxLength) => string.length <= maxLength;
+checkStringLength('проверяемая строка', 20);
 
 const checkPalindrome = (string) => {
   const cleaned = string.replaceAll(' ', '').toLowerCase();
