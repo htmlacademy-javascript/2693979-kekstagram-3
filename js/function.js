@@ -23,3 +23,33 @@ const getNumberFromString = (value) => {
 };
 getNumberFromString('2023 год');
 
+// Задание 5.16
+
+const convertStringToMinutes = (string) => {
+  const substrings = string.split(':');
+  return (+substrings[0] * 60) + +substrings[1];
+};
+
+const checkTimeMeeting = (startWork, stopWork, startMeeting, duration) => {
+  const startWorkInMinutes = convertStringToMinutes(startWork);
+  const startMeetingInMinutes = convertStringToMinutes(startMeeting);
+
+  if (startMeetingInMinutes < startWorkInMinutes) {
+    return false;
+  }
+
+  const stopWorkInMinutes = convertStringToMinutes(stopWork);
+  const stopMeetingInMinutes = startMeetingInMinutes + duration;
+
+  if (stopMeetingInMinutes > stopWorkInMinutes) {
+    return false;
+  }
+
+  return true;
+};
+
+checkTimeMeeting('08:00', '17:30', '14:00', 90);
+checkTimeMeeting('8:0', '10:0', '8:0', 120);
+checkTimeMeeting('08:00', '14:30', '14:00', 90);
+checkTimeMeeting('14:00', '17:30', '08:0', 90);
+checkTimeMeeting('8:00', '17:30', '08:00', 900);
