@@ -23,8 +23,6 @@ const getNumberFromString = (value) => {
 };
 getNumberFromString('2023 год');
 
-// Задание 5.16
-
 const convertStringToMinutes = (string) => {
   const substrings = string.split(':');
   return (+substrings[0] * 60) + +substrings[1];

@@ -1,3 +1,3 @@
-import { createGalleryArray } from './data.js';
+import { createThumbnailsBlock } from './thumbnails.js';
 
-createGalleryArray();
+createThumbnailsBlock();
