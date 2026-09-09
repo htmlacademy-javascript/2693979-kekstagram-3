@@ -1,3 +1,3 @@
 import { createThumbnailsBlock } from './thumbnails.js';
 
-createThumbnailsBlock();
+createThumbnailsBlock('pictures', 'picture');
