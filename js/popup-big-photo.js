@@ -55,12 +55,12 @@ const createPopupCloseHandlers = (popupBlock, body, popupClose) => {
     closePopup();
   };
 
-  const closePopup = () => {
+  function closePopup () {
     popupBlock.classList.add('hidden');
     body.classList.remove('modal-open');
     popupClose.removeEventListener('click', onPopupClick);
     document.removeEventListener('keydown', onPopupEscKeydown);
-  };
+  }
 
   popupClose.addEventListener('click', onPopupClick);
   document.addEventListener('keydown', onPopupEscKeydown);
