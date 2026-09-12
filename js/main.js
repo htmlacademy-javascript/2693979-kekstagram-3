@@ -1,3 +1,3 @@
-import { createThumbnailsBlock } from './thumbnails.js';
+import { createGallery } from './gallery.js';
 
-createThumbnailsBlock();
+createGallery('pictures', 'picture', 'big-picture');
