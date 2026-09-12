@@ -45,7 +45,7 @@ const createComments = (dataComments) => {
 
 const createPopupCloseHandlers = (popupBlock, body, popupClose) => {
   const onPopupEscKeydown = (evt) => {
-    if (isEscapeKey) {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
       closePopup();
     }
