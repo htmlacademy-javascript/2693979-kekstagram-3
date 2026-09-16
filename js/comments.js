@@ -44,8 +44,19 @@ const createCommentsList = (dataComments, startShowComments, endShowComments) =>
   return commentsList;
 };
 
+const getCommentWord = (value) => {
+  const pr = new Intl.PluralRules('ru-RU');
+  const rule = pr.select(value);
+  switch (rule) {
+    case 'one': return 'комментарий';
+    case 'few': return 'комментария';
+    default: return 'комментариев';
+  }
+};
+
 const displayCountShowComments = (commentsCount) => {
-  countShownComments.textContent = commentsCount;
+  const commentWord = getCommentWord(commentsCount);
+  countShownComments.textContent = `${commentsCount } ${ commentWord}`;
 };
 
 const displayCountTotalComments = (commentsCount) => {
