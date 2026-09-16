@@ -74,6 +74,7 @@ const createCommentsArray = () => {
 
 const createGalleryBlock = (id) => {
   const url = `photos/${ id }.jpg`;
+  const authorAvatar = `img/avatar-${ getRandomInteger(1, MAX_AVATARS) }.svg`;
   const description = PHOTO_DESCRIPTIONS[id - 1];
   const likes = getRandomInteger(MIN_LIKES, MAX_LIKES);
   const comments = createCommentsArray();
@@ -81,6 +82,7 @@ const createGalleryBlock = (id) => {
   return {
     id,
     url,
+    authorAvatar,
     description,
     likes,
     comments
@@ -89,9 +91,9 @@ const createGalleryBlock = (id) => {
 
 const generatePhotoId = createRandomIdFromRangeGenerator(1, MAX_PHOTOS);
 
-const createGalleryArray = () => Array.from(
+const createGalleryContent = () => Array.from(
   {length: MAX_PHOTOS},
   () => createGalleryBlock(generatePhotoId())
 );
 
-export { createGalleryArray };
+export { createGalleryContent };

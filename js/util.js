@@ -27,4 +27,11 @@ const createRandomIdFromRangeGenerator = (min, max) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey };
+const hasDuplicatesIgnoreCase = (array) => {
+  const normalized = array.map((item) =>
+    typeof item === 'string' ? item.toLocaleLowerCase() : item
+  );
+  return new Set(normalized).size !== normalized.length;
+};
+
+export { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, hasDuplicatesIgnoreCase };
