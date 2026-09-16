@@ -1,3 +1,5 @@
 import { createGallery } from './gallery.js';
+import { uploadForm } from './upload-form.js';
 
-createGallery('pictures', 'picture', 'big-picture');
+createGallery();
+uploadForm();
