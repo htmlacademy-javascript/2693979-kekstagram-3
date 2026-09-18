@@ -125,6 +125,15 @@ const uploadForm = () => {
   imageInput.addEventListener('change', () => {
     togglePopup(editingBlock);
 
+    const file = imageInput.files[0];
+    const fileName = file.name.toLowerCase();
+
+    const matches = FormParameters.FILE_TYPES.some((it) => fileName.endsWith(it));
+
+    if (matches) {
+      imagePreview.src = URL.createObjectURL(file);
+    }
+
     scaleToImage();
     sliderInit();
 

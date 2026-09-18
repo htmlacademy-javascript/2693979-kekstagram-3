@@ -41,6 +41,7 @@ const FormParameters = Object.freeze({
   BASE_URL: 'https://32.javascript.htmlacademy.pro/kekstagram',
   GET_DATA: '/data/',
   SEND_DATA: '/',
+  FILE_TYPES: ['jpg', 'jpeg', 'png'],
   UPLOAD_BLOCK: '.img-upload',
   UPLOAD_FORM: '.img-upload__form',
   UPLOAD_IMAGE_INPUT: '.img-upload__input',
