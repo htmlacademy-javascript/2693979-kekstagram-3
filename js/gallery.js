@@ -18,13 +18,13 @@ const createGallery = (galleryContent, sorting) => {
   let resultContent;
 
   switch (sorting) {
-    case 'random':
+    case GalleryParameters.FILTER_RANDOM:
       resultContent = sortingRandom(galleryContent);
       break;
-    case 'discussed':
+    case GalleryParameters.FILTER_DISCUSSED:
       resultContent = sortingDiscussed(galleryContent);
       break;
-    case 'default':
+    case GalleryParameters.FILTER_DEFAULT:
       resultContent = galleryContent;
   }
 
