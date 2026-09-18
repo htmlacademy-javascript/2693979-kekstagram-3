@@ -1,27 +1,27 @@
-import { galleryParameters } from './parameters.js';
+import { GalleryParameters } from './parameters.js';
 import { toggleDisplayElement } from './class-list-helpers.js';
 
-const socialContainer = document.querySelector(galleryParameters.SOCIAL_CONTAINER);
-const socialComments = socialContainer.querySelector(galleryParameters.SOCIAL_COMMENTS);
-const countShowComments = galleryParameters.SHOWN_COMMENTS_LENGTH;
-const countShownComments = socialContainer.querySelector(galleryParameters.COUNT_SHOWN_COMMENTS);
-const countTotalComments = socialContainer.querySelector(galleryParameters.COUNT_TOTAL_COMMENTS);
-const commentsLoader = socialContainer.querySelector(galleryParameters.COMMENTS_LOADER_BUTTON);
+const socialContainer = document.querySelector(GalleryParameters.SOCIAL_CONTAINER);
+const socialComments = socialContainer.querySelector(GalleryParameters.SOCIAL_COMMENTS);
+const countShowComments = GalleryParameters.SHOWN_COMMENTS_LENGTH;
+const countShownComments = socialContainer.querySelector(GalleryParameters.COUNT_SHOWN_COMMENTS);
+const countTotalComments = socialContainer.querySelector(GalleryParameters.COUNT_TOTAL_COMMENTS);
+const commentsLoader = socialContainer.querySelector(GalleryParameters.COMMENTS_LOADER_BUTTON);
 
-const commentTag = galleryParameters.COMMENT_TAG;
-const commentTextTag = galleryParameters.COMMENT_TEXT_TAG;
-const commentItemClass = galleryParameters.COMMENT_ITEM;
-const textClass = galleryParameters.COMMENT_TEXT;
+const commentTag = GalleryParameters.COMMENT_TAG;
+const commentTextTag = GalleryParameters.COMMENT_TEXT_TAG;
+const commentItemClass = GalleryParameters.COMMENT_ITEM;
+const textClass = GalleryParameters.COMMENT_TEXT;
 let startComment = 0;
 let countMaxComments = 0;
 
 const createCommentAvatar = (avatar, name) => {
   const userAvatar = document.createElement('img');
-  userAvatar.classList.add(galleryParameters.AVATAR);
+  userAvatar.classList.add(GalleryParameters.AVATAR);
   userAvatar.setAttribute('src', avatar);
   userAvatar.setAttribute('alt', name);
-  userAvatar.setAttribute('width', galleryParameters.AVATAR_WIDTH);
-  userAvatar.setAttribute('height', galleryParameters.AVATAR_HEIGHT);
+  userAvatar.setAttribute('width', GalleryParameters.AVATAR_WIDTH);
+  userAvatar.setAttribute('height', GalleryParameters.AVATAR_HEIGHT);
   return userAvatar;
 };
 
