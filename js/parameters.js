@@ -1,4 +1,12 @@
 const GalleryParameters = Object.freeze({
+  IMAGE_FILTERS: '.img-filters',
+  IMAGE_FILTERS_INACTIVE: 'img-filters--inactive',
+  IMAGE_FILTERS_BUTTON_ACTIVE: 'img-filters__button--active',
+  FILTER_DEFAULT: '#filter-default',
+  FILTER_RANDOM: '#filter-random',
+  FILTER_DISCUSSED: '#filter-discussed',
+  MAX_RANDOM_IMAGES: 10,
+  DEBOUNCE_TIME: 500,
   HIDDEN: 'hidden',
   DISABLE_SCROLLING: 'modal-open',
   DISABLE_SCROLLING_ELEMENT: 'body',
@@ -37,6 +45,8 @@ const FormParameters = Object.freeze({
   UPLOAD_IMAGE_INPUT: '.img-upload__input',
   UPLOAD_IMAGE_PREVIEW: '.img-upload__preview',
   HASHTAGS_INPUT: '.text__hashtags',
+  MAX_HASHTAGS: 5,
+  MAX_HASHTAG_LENGTH: 20,
   COMMENTS_TEXT: '.text__description',
   EDITING_BLOCK: '.img-upload__overlay',
   BUTTON_SMALLER: '.scale__control--smaller',
@@ -59,6 +69,7 @@ const FormParameters = Object.freeze({
   SUCCESS_BUTTON: '.success__button',
   SUCCESS_INNER: '.success__inner',
   ERROR_DATA_TEMPLATE: '#data-error',
+  ERROR_DATA_CLOSE_TIME: 5000,
   UPLOAD_MESSAGE: '.upload-message',
   UPLOAD_SUBMIT_BUTTON: '.img-upload__submit'
 });

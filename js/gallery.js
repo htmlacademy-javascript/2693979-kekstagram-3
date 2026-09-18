@@ -1,12 +1,34 @@
 import { GalleryParameters } from './parameters.js';
 import { showBigPhoto } from './show-big-photo.js';
+import { sortingRandom, sortingDiscussed } from './sorting.js';
 
 const galleryContainer = document.querySelector(GalleryParameters.GALLERY_CONTAINER);
 const galleryTemplate = document.querySelector(GalleryParameters.GALLERY_TEMPLATE).content;
 const galleryFragment = document.createDocumentFragment();
 
-const createGallery = (galleryContent) => {
-  galleryContent.forEach((galleryElement) => {
+const clearGallery = () => {
+  const galleryElements = galleryContainer.querySelectorAll(GalleryParameters.GALLERY_TEMPLATE_LINK);
+  galleryElements.forEach((element) => {
+    element.remove();
+  });
+};
+
+const createGallery = (galleryContent, sorting) => {
+  clearGallery();
+  let resultContent;
+
+  switch (sorting) {
+    case 'random':
+      resultContent = sortingRandom(galleryContent);
+      break;
+    case 'discussed':
+      resultContent = sortingDiscussed(galleryContent);
+      break;
+    case 'default':
+      resultContent = galleryContent;
+  }
+
+  resultContent.forEach((galleryElement) => {
     const galleryContainerElement = galleryTemplate.cloneNode(true);
     const link = galleryContainerElement.querySelector(GalleryParameters.GALLERY_TEMPLATE_LINK);
     link.href = galleryElement.url;

@@ -49,7 +49,7 @@ const validateHashtags = (value) => {
   const regexp = /^#[a-zа-яё0-9]+$/i;
   let error = false;
 
-  if (hashtags.length > 5) {
+  if (hashtags.length > FormParameters.MAX_HASHTAGS) {
     errorMessage += ErrorMessages.ERROR_MESSAGE_1;
     error = true;
   }
@@ -68,7 +68,7 @@ const validateHashtags = (value) => {
       errorMessage += ErrorMessages.ERROR_MESSAGE_4;
       error = true;
     }
-    if (hashtag.length > 20) {
+    if (hashtag.length > FormParameters.MAX_HASHTAG_LENGTH) {
       errorMessage += ErrorMessages.ERROR_MESSAGE_5;
       error = true;
     }

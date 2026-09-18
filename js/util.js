@@ -69,4 +69,25 @@ const showMessageErrorData = () => {
   showMessage(FormParameters.ERROR_DATA_TEMPLATE, false, false, closeErrorData);
 };
 
-export { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload, showMessageErrorData };
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+const throttle = (callback, delayBetweenFrames) => {
+  let lastTime = 0;
+
+  return (...rest) => {
+    const now = new Date();
+
+    if (now - lastTime >= delayBetweenFrames) {
+      callback.apply(this, rest);
+      lastTime = now;
+    }
+  };
+};
+
+export { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload, showMessageErrorData, debounce, throttle };

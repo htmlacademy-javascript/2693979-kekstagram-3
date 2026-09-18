@@ -1,4 +1,4 @@
-import { GalleryParameters } from './parameters.js';
+import { GalleryParameters, FormParameters } from './parameters.js';
 import { isEscapeKey } from './util.js';
 import { toggleDisplayElement, togglePageScrolling } from './class-list-helpers.js';
 
@@ -91,7 +91,7 @@ const createUploadMessageCloseHandlers = (button, uploadMessage, block) => {
 const closeErrorData = (uploadMessage) => {
   setTimeout(() => {
     uploadMessage.textContent = '';
-  }, 5000);
+  }, FormParameters.ERROR_DATA_CLOSE_TIME);
 };
 
 export { togglePopup, createPopupCloseHandlers, closePopupAfterSubmitForm, createUploadMessageCloseHandlers, closeErrorData };
