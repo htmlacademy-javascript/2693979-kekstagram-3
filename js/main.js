@@ -1,3 +1,4 @@
+import { GalleryParameters } from './parameters.js';
 import { showMessageErrorData } from './util.js';
 import { createGallery } from './gallery.js';
 import { getData } from './api.js';
@@ -9,7 +10,7 @@ let content;
 
 getData(showMessageErrorData)
   .then((galleryContent) => {
-    createGallery(galleryContent, 'default');
+    createGallery(galleryContent, GalleryParameters.FILTER_DEFAULT);
     content = galleryContent;
   })
   .then(() => {

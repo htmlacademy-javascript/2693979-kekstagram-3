@@ -3,54 +3,36 @@ import { createGallery } from './gallery.js';
 import { debounce } from './util.js';
 
 const imageFilters = document.querySelector(GalleryParameters.IMAGE_FILTERS);
-const filterDefault = imageFilters.querySelector(GalleryParameters.FILTER_DEFAULT);
-const filterRandom = imageFilters.querySelector(GalleryParameters.FILTER_RANDOM);
-const filterDiscussed = imageFilters.querySelector(GalleryParameters.FILTER_DISCUSSED);
+const buttonClass = GalleryParameters.IMAGE_FILTERS_BUTTON;
 const buttonActiveClass = GalleryParameters.IMAGE_FILTERS_BUTTON_ACTIVE;
+let currentFilter = GalleryParameters.FILTER_DEFAULT;
 
 const displaySorting = (content) => {
   imageFilters.classList.remove(GalleryParameters.IMAGE_FILTERS_INACTIVE);
 
-  const debouncedCreateDefault = debounce(
-    () => createGallery(content, 'default'),
-    GalleryParameters.DEBOUNCE_TIME);
+  const debouncedCreateGallery = debounce(
+    () => createGallery(content, currentFilter),
+    GalleryParameters.DEBOUNCE_TIME
+  );
 
-  const debouncedCreateRandom = debounce(
-    () => createGallery(content, 'random'),
-    GalleryParameters.DEBOUNCE_TIME);
-
-  const debouncedCreateDiscussed = debounce(
-    () => createGallery(content, 'discussed'),
-    GalleryParameters.DEBOUNCE_TIME);
-
-  filterDefault.addEventListener('click', () => {
-    if (!filterDefault.classList.contains(buttonActiveClass)) {
-      filterDefault.classList.add(buttonActiveClass);
-      filterRandom.classList.remove(buttonActiveClass);
-      filterDiscussed.classList.remove(buttonActiveClass);
-
-      debouncedCreateDefault();
+  imageFilters.addEventListener('click', (evt) => {
+    const target = evt.target.closest(`.${buttonClass}`); // безопаснее, чем evt.target
+    if (!target) {
+      return;
     }
-  });
 
-  filterRandom.addEventListener('click', () => {
-    if (!filterRandom.classList.contains(buttonActiveClass)) {
-      filterRandom.classList.add(buttonActiveClass);
-      filterDefault.classList.remove(buttonActiveClass);
-      filterDiscussed.classList.remove(buttonActiveClass);
-
-      debouncedCreateRandom();
+    const clickedButton = evt.target;
+    if (clickedButton.id === currentFilter) {
+      return;
     }
-  });
 
-  filterDiscussed.addEventListener('click', () => {
-    if (!filterDiscussed.classList.contains(buttonActiveClass)) {
-      filterDiscussed.classList.add(buttonActiveClass);
-      filterRandom.classList.remove(buttonActiveClass);
-      filterDefault.classList.remove(buttonActiveClass);
+    imageFilters
+      .querySelector(`.${buttonActiveClass}`)
+      .classList.remove(buttonActiveClass);
+    clickedButton.classList.add(buttonActiveClass);
+    currentFilter = clickedButton.id;
 
-      debouncedCreateDiscussed();
-    }
+    debouncedCreateGallery();
   });
 };
 
