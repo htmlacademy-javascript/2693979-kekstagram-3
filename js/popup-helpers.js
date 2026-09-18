@@ -1,8 +1,8 @@
-import { galleryParameters } from './parameters.js';
+import { GalleryParameters } from './parameters.js';
 import { isEscapeKey } from './util.js';
 import { toggleDisplayElement, togglePageScrolling } from './class-list-helpers.js';
 
-const disableScrolling = document.querySelector(galleryParameters.DISABLE_SCROLLING_ELEMENT);
+const disableScrolling = document.querySelector(GalleryParameters.DISABLE_SCROLLING_ELEMENT);
 let popupContainer;
 let close;
 let additionalArguments;

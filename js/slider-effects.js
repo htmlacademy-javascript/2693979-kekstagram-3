@@ -1,18 +1,18 @@
-import { formParameters } from './parameters.js';
+import { FormParameters } from './parameters.js';
 import { toggleDisplayElement, checkHiddenElement } from './class-list-helpers.js';
 
-const uploadBlock = document.querySelector(formParameters.UPLOAD_BLOCK);
-const imagePreviewContainer = uploadBlock.querySelector(formParameters.UPLOAD_IMAGE_PREVIEW);
+const uploadBlock = document.querySelector(FormParameters.UPLOAD_BLOCK);
+const imagePreviewContainer = uploadBlock.querySelector(FormParameters.UPLOAD_IMAGE_PREVIEW);
 const imagePreview = imagePreviewContainer.querySelector('img');
-const effectLevel = uploadBlock.querySelector(formParameters.EFFECT_LEVEL);
-const sliderElement = uploadBlock.querySelector(formParameters.SLIDER_ELEMENT);
-const valueElement = uploadBlock.querySelector(formParameters.VALUE_ELEMENT);
-const effectNone = uploadBlock.querySelector(formParameters.EFFECT_NONE);
-const effectChrome = uploadBlock.querySelector(formParameters.EFFECT_CHROME);
-const effectSepia = uploadBlock.querySelector(formParameters.EFFECT_SEPIA);
-const effectMarvin = uploadBlock.querySelector(formParameters.EFFECT_MARVIN);
-const effectPhobos = uploadBlock.querySelector(formParameters.EFFECT_PHOBOS);
-const effectHeat = uploadBlock.querySelector(formParameters.EFFECT_HEAT);
+const effectLevel = uploadBlock.querySelector(FormParameters.EFFECT_LEVEL);
+const sliderElement = uploadBlock.querySelector(FormParameters.SLIDER_ELEMENT);
+const valueElement = uploadBlock.querySelector(FormParameters.VALUE_ELEMENT);
+const effectNone = uploadBlock.querySelector(FormParameters.EFFECT_NONE);
+const effectChrome = uploadBlock.querySelector(FormParameters.EFFECT_CHROME);
+const effectSepia = uploadBlock.querySelector(FormParameters.EFFECT_SEPIA);
+const effectMarvin = uploadBlock.querySelector(FormParameters.EFFECT_MARVIN);
+const effectPhobos = uploadBlock.querySelector(FormParameters.EFFECT_PHOBOS);
+const effectHeat = uploadBlock.querySelector(FormParameters.EFFECT_HEAT);
 let effectFlag = 'None';
 
 const addImageEffect = (flag, value) => {

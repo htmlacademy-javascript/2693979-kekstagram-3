@@ -1,5 +1,7 @@
-import { formParameters } from './parameters.js';
+import { FormParameters } from './parameters.js';
 import { createUploadMessageCloseHandlers, closeErrorData } from './popup-helpers.js';
+
+const uploadMessage = document.querySelector(FormParameters.UPLOAD_MESSAGE);
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -19,7 +21,6 @@ const createRandomIdFromRangeGenerator = (min, max) => {
     }
 
     let currentValue = getRandomInteger(min, max);
-    // Проверка на уникальность
     while (previousValues.includes(currentValue)) {
       currentValue = getRandomInteger(min, max);
     }
@@ -37,37 +38,35 @@ const hasDuplicatesIgnoreCase = (array) => {
   return new Set(normalized).size !== normalized.length;
 };
 
-const showMessage = (template, button, inner) => {
-  const uploadMessage = document.querySelector(formParameters.UPLOAD_MESSAGE);
+const showMessage = (template, button = false, inner = false, autoClose = false) => {
   const messageTemplate = document.querySelector(template).content;
   const fragment = document.createDocumentFragment();
   const container = messageTemplate.cloneNode(true);
-  const messageButton = container.querySelector(button);
-  const messageInner = container.querySelector(inner);
-  createUploadMessageCloseHandlers(messageButton, uploadMessage, messageInner);
+
+  if (button && inner) {
+    const messageButton = container.querySelector(button);
+    const messageInner = container.querySelector(inner);
+    createUploadMessageCloseHandlers(messageButton, uploadMessage, messageInner);
+  }
 
   fragment.appendChild(container);
   uploadMessage.appendChild(fragment);
+
+  if (autoClose) {
+    autoClose(uploadMessage);
+  }
 };
 
 const showMessageErrorUpload = () => {
-  showMessage(formParameters.ERROR_TEMPLATE, formParameters.ERROR_BUTTON, formParameters.ERROR_INNER);
+  showMessage(FormParameters.ERROR_TEMPLATE, FormParameters.ERROR_BUTTON, FormParameters.ERROR_INNER);
 };
 
 const showMessageSuccessUpload = () => {
-  showMessage(formParameters.SUCCESS_TEMPLATE, formParameters.SUCCESS_BUTTON, formParameters.SUCCESS_INNER);
+  showMessage(FormParameters.SUCCESS_TEMPLATE, FormParameters.SUCCESS_BUTTON, FormParameters.SUCCESS_INNER);
 };
 
 const showMessageErrorData = () => {
-  const uploadMessage = document.querySelector(formParameters.UPLOAD_MESSAGE);
-  const errorDataTemplate = document.querySelector(formParameters.ERROR_DATA_TEMPLATE).content;
-  const errorDataFragment = document.createDocumentFragment();
-  const errorDataContainer = errorDataTemplate.cloneNode(true);
-
-  errorDataFragment.appendChild(errorDataContainer);
-  uploadMessage.appendChild(errorDataFragment);
-
-  closeErrorData(uploadMessage);
+  showMessage(FormParameters.ERROR_DATA_TEMPLATE, false, false, closeErrorData);
 };
 
 export { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload, showMessageErrorData };

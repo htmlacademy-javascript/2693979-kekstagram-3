@@ -1,15 +1,15 @@
-import { galleryParameters } from './parameters.js';
+import { GalleryParameters } from './parameters.js';
 import { toggleDisplayElement, checkHiddenElement } from './class-list-helpers.js';
 import { togglePopup, createPopupCloseHandlers } from './popup-helpers.js';
 import { commentsLoader, showComments, resetCountComments, displayCountShowComments, displayCountTotalComments } from './comments.js';
 
-const bigPhotoContainer = document.querySelector(galleryParameters.BIG_PHOTO_CONTAINER);
+const bigPhotoContainer = document.querySelector(GalleryParameters.BIG_PHOTO_CONTAINER);
 const bigPhoto = bigPhotoContainer
-  .querySelector(galleryParameters.BIG_PHOTO_IMG)
+  .querySelector(GalleryParameters.BIG_PHOTO_IMG)
   .querySelector('img');
-const bigPhotoDescription = bigPhotoContainer.querySelector(galleryParameters.BIG_PHOTO_DESCRIPTION);
-const bigPhotoLikes = bigPhotoContainer.querySelector(galleryParameters.BIG_PHOTO_LIKES);
-const bigPhotoClose = bigPhotoContainer.querySelector(galleryParameters.BIG_PHOTO_CLOSE);
+const bigPhotoDescription = bigPhotoContainer.querySelector(GalleryParameters.BIG_PHOTO_DESCRIPTION);
+const bigPhotoLikes = bigPhotoContainer.querySelector(GalleryParameters.BIG_PHOTO_LIKES);
+const bigPhotoClose = bigPhotoContainer.querySelector(GalleryParameters.BIG_PHOTO_CLOSE);
 
 const resetComments = (arrayArguments) => {
   if (checkHiddenElement(arrayArguments[0])) {

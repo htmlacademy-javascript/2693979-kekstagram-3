@@ -1,4 +1,4 @@
-const galleryParameters = Object.freeze({
+const GalleryParameters = Object.freeze({
   HIDDEN: 'hidden',
   DISABLE_SCROLLING: 'modal-open',
   DISABLE_SCROLLING_ELEMENT: 'body',
@@ -28,7 +28,7 @@ const galleryParameters = Object.freeze({
   COMMENT_TEXT: 'social__text'
 });
 
-const formParameters = Object.freeze({
+const FormParameters = Object.freeze({
   BASE_URL: 'https://32.javascript.htmlacademy.pro/kekstagram',
   GET_DATA: '/data/',
   SEND_DATA: '/',
@@ -63,7 +63,7 @@ const formParameters = Object.freeze({
   UPLOAD_SUBMIT_BUTTON: '.img-upload__submit'
 });
 
-const errorMessages = Object.freeze({
+const ErrorMessages = Object.freeze({
   ERROR_MESSAGE_1: 'Хештегов должно быть не более пяти.<br>',
   ERROR_MESSAGE_2: 'Не должно быть одинаковых хештегов (хештеги нечувствительны к регистру).<br>',
   ERROR_MESSAGE_3: 'Хэштеги должны начинаться с символа #.<br>',
@@ -72,4 +72,4 @@ const errorMessages = Object.freeze({
   ERROR_MESSAGE_6: 'Хештег после # должен содержать только буквы и числа<br>'
 });
 
-export { galleryParameters, formParameters, errorMessages };
+export { GalleryParameters, FormParameters, ErrorMessages };
