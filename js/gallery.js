@@ -1,13 +1,11 @@
 import { galleryParameters } from './parameters.js';
-import { createGalleryContent } from './gallery-content.js';
 import { showBigPhoto } from './show-big-photo.js';
 
-const galleryContent = createGalleryContent();
 const galleryContainer = document.querySelector(galleryParameters.GALLERY_CONTAINER);
 const galleryTemplate = document.querySelector(galleryParameters.GALLERY_TEMPLATE).content;
 const galleryFragment = document.createDocumentFragment();
 
-const createGallery = () => {
+const createGallery = (galleryContent) => {
   galleryContent.forEach((galleryElement) => {
     const galleryContainerElement = galleryTemplate.cloneNode(true);
     const link = galleryContainerElement.querySelector(galleryParameters.GALLERY_TEMPLATE_LINK);

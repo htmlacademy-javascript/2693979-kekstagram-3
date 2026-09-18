@@ -1,7 +1,8 @@
 import { formParameters, errorMessages } from './parameters.js';
-import { hasDuplicatesIgnoreCase } from './util.js';
+import { hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload } from './util.js';
 import { togglePopup, createPopupCloseHandlers } from './popup-helpers.js';
 import { sliderInit, removeEffectsEvents, uploadBlock, imagePreview } from './slider-effects.js';
+import { sendData } from './api.js';
 
 const form = uploadBlock.querySelector(formParameters.UPLOAD_FORM);
 const imageInput = uploadBlock.querySelector(formParameters.UPLOAD_IMAGE_INPUT);
@@ -12,6 +13,7 @@ const formClose = uploadBlock.querySelector(formParameters.FORM_CLOSE);
 const buttonSmaller = uploadBlock.querySelector(formParameters.BUTTON_SMALLER);
 const buttonBigger = uploadBlock.querySelector(formParameters.BUTTON_BIGGER);
 const scaleInput = uploadBlock.querySelector(formParameters.SCALE_INPUT);
+const submitButton = uploadBlock.querySelector(formParameters.UPLOAD_SUBMIT_BUTTON);
 
 const maxScale = 1;
 const minScale = 0.25;
@@ -114,6 +116,11 @@ const resetForm = (arrayArguments) => {
   removeStopPaginationEvent();
 };
 
+const resetFormObject = {
+  additionalFunction: resetForm,
+  arguments: [imageInput, imagePreview]
+};
+
 const uploadForm = () => {
   imageInput.addEventListener('change', () => {
     togglePopup(editingBlock);
@@ -124,14 +131,21 @@ const uploadForm = () => {
     hashtagsInput.addEventListener('keydown', stopPaginationEvent);
     commentsText.addEventListener('keydown', stopPaginationEvent);
 
-    const resetFormObject = {
-      additionalFunction: resetForm,
-      arguments: [imageInput, imagePreview]
-    };
-
     createPopupCloseHandlers(editingBlock, formClose, resetFormObject);
   });
+};
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
   const pristine = new Pristine(form, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
@@ -142,15 +156,20 @@ const uploadForm = () => {
 
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    pristine.validate();
 
-    // const isValid = pristine.validate();
-    // if (isValid) {
-    //   console.log('Можно отправлять');
-    // } else {
-    //   console.log('Форма невалидна');
-    // }
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target), showMessageErrorUpload)
+        .then(() => {
+          onSuccess(editingBlock, formClose, resetFormObject);
+          showMessageSuccessUpload();
+        })
+        .finally(() => {
+          unblockSubmitButton();
+        });
+    }
   });
 };
 
-export { uploadForm };
+export { uploadForm, setUserFormSubmit };

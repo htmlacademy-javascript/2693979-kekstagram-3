@@ -14,7 +14,6 @@ const galleryParameters = Object.freeze({
   BIG_PHOTO_LIKES: '.likes-count',
   BIG_PHOTO_CLOSE: '.big-picture__cancel',
   COMMENTS_LOADER_BUTTON: '.comments-loader',
-  SOCIAL_HEADER: '.social__header',
   SOCIAL_CONTAINER: '.social',
   SOCIAL_COMMENTS: '.social__comments',
   AVATAR: 'social__picture',
@@ -30,6 +29,9 @@ const galleryParameters = Object.freeze({
 });
 
 const formParameters = Object.freeze({
+  BASE_URL: 'https://32.javascript.htmlacademy.pro/kekstagram',
+  GET_DATA: '/data/',
+  SEND_DATA: '/',
   UPLOAD_BLOCK: '.img-upload',
   UPLOAD_FORM: '.img-upload__form',
   UPLOAD_IMAGE_INPUT: '.img-upload__input',
@@ -50,6 +52,15 @@ const formParameters = Object.freeze({
   EFFECT_PHOBOS: '#effect-phobos',
   EFFECT_HEAT: '#effect-heat',
   FORM_CLOSE: '.img-upload__cancel',
+  ERROR_TEMPLATE: '#error',
+  ERROR_BUTTON: '.error__button',
+  ERROR_INNER: '.error__inner',
+  SUCCESS_TEMPLATE: '#success',
+  SUCCESS_BUTTON: '.success__button',
+  SUCCESS_INNER: '.success__inner',
+  ERROR_DATA_TEMPLATE: '#data-error',
+  UPLOAD_MESSAGE: '.upload-message',
+  UPLOAD_SUBMIT_BUTTON: '.img-upload__submit'
 });
 
 const errorMessages = Object.freeze({

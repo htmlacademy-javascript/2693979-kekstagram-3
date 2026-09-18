@@ -7,8 +7,6 @@ const bigPhotoContainer = document.querySelector(galleryParameters.BIG_PHOTO_CON
 const bigPhoto = bigPhotoContainer
   .querySelector(galleryParameters.BIG_PHOTO_IMG)
   .querySelector('img');
-const socialHeader = bigPhotoContainer.querySelector(galleryParameters.SOCIAL_HEADER);
-const bigPhotoAuthorAvatar = socialHeader.querySelector(`.${ galleryParameters.AVATAR}`);
 const bigPhotoDescription = bigPhotoContainer.querySelector(galleryParameters.BIG_PHOTO_DESCRIPTION);
 const bigPhotoLikes = bigPhotoContainer.querySelector(galleryParameters.BIG_PHOTO_LIKES);
 const bigPhotoClose = bigPhotoContainer.querySelector(galleryParameters.BIG_PHOTO_CLOSE);
@@ -25,7 +23,6 @@ const showBigPhoto = (galleryElement) => {
   togglePopup(bigPhotoContainer);
   bigPhoto.src = galleryElement.url;
   bigPhoto.alt = galleryElement.description;
-  bigPhotoAuthorAvatar.src = galleryElement.authorAvatar;
   bigPhotoDescription.textContent = galleryElement.description;
   bigPhotoLikes.textContent = galleryElement.likes;
 
