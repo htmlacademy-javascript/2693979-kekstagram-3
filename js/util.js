@@ -1,3 +1,6 @@
+import { formParameters } from './parameters.js';
+import { createUploadMessageCloseHandlers, closeErrorData } from './popup-helpers.js';
+
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -34,4 +37,37 @@ const hasDuplicatesIgnoreCase = (array) => {
   return new Set(normalized).size !== normalized.length;
 };
 
-export { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, hasDuplicatesIgnoreCase };
+const showMessage = (template, button, inner) => {
+  const uploadMessage = document.querySelector(formParameters.UPLOAD_MESSAGE);
+  const messageTemplate = document.querySelector(template).content;
+  const fragment = document.createDocumentFragment();
+  const container = messageTemplate.cloneNode(true);
+  const messageButton = container.querySelector(button);
+  const messageInner = container.querySelector(inner);
+  createUploadMessageCloseHandlers(messageButton, uploadMessage, messageInner);
+
+  fragment.appendChild(container);
+  uploadMessage.appendChild(fragment);
+};
+
+const showMessageErrorUpload = () => {
+  showMessage(formParameters.ERROR_TEMPLATE, formParameters.ERROR_BUTTON, formParameters.ERROR_INNER);
+};
+
+const showMessageSuccessUpload = () => {
+  showMessage(formParameters.SUCCESS_TEMPLATE, formParameters.SUCCESS_BUTTON, formParameters.SUCCESS_INNER);
+};
+
+const showMessageErrorData = () => {
+  const uploadMessage = document.querySelector(formParameters.UPLOAD_MESSAGE);
+  const errorDataTemplate = document.querySelector(formParameters.ERROR_DATA_TEMPLATE).content;
+  const errorDataFragment = document.createDocumentFragment();
+  const errorDataContainer = errorDataTemplate.cloneNode(true);
+
+  errorDataFragment.appendChild(errorDataContainer);
+  uploadMessage.appendChild(errorDataFragment);
+
+  closeErrorData(uploadMessage);
+};
+
+export { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload, showMessageErrorData };
