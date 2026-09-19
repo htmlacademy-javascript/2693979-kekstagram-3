@@ -6,6 +6,7 @@ const socialComments = socialContainer.querySelector(GalleryParameters.SOCIAL_CO
 const countShowComments = GalleryParameters.SHOWN_COMMENTS_LENGTH;
 const countShownComments = socialContainer.querySelector(GalleryParameters.COUNT_SHOWN_COMMENTS);
 const countTotalComments = socialContainer.querySelector(GalleryParameters.COUNT_TOTAL_COMMENTS);
+const commentsText = socialContainer.querySelector(GalleryParameters.COMMENTS_TEXT);
 const commentsLoader = socialContainer.querySelector(GalleryParameters.COMMENTS_LOADER_BUTTON);
 
 const commentTag = GalleryParameters.COMMENT_TAG;
@@ -56,7 +57,8 @@ const getCommentWord = (value) => {
 
 const displayCountShowComments = (commentsCount) => {
   const commentWord = getCommentWord(commentsCount);
-  countShownComments.textContent = `${commentsCount } ${ commentWord}`;
+  countShownComments.textContent = commentsCount;
+  commentsText.textContent = commentWord;
 };
 
 const displayCountTotalComments = (commentsCount) => {

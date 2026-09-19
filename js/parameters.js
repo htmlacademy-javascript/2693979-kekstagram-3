@@ -31,6 +31,7 @@ const GalleryParameters = Object.freeze({
   SHOWN_COMMENTS_LENGTH: 5,
   COUNT_SHOWN_COMMENTS: '.social__comment-shown-count',
   COUNT_TOTAL_COMMENTS: '.social__comment-total-count',
+  COMMENTS_TEXT: '.social__comment-text',
   COMMENT_TAG: 'li',
   COMMENT_TEXT_TAG: 'p',
   COMMENT_ITEM: 'social__comment',
@@ -41,6 +42,7 @@ const FormParameters = Object.freeze({
   BASE_URL: 'https://32.javascript.htmlacademy.pro/kekstagram',
   GET_DATA: '/data/',
   SEND_DATA: '/',
+  DEFAULT_IMAGE_URL: 'img/upload-default-image.jpg',
   FILE_TYPES: ['jpg', 'jpeg', 'png'],
   UPLOAD_BLOCK: '.img-upload',
   UPLOAD_FORM: '.img-upload__form',
@@ -49,6 +51,7 @@ const FormParameters = Object.freeze({
   HASHTAGS_INPUT: '.text__hashtags',
   MAX_HASHTAGS: 5,
   MAX_HASHTAG_LENGTH: 20,
+  MAX_COMMENT_LENGTH: 140,
   COMMENTS_TEXT: '.text__description',
   EDITING_BLOCK: '.img-upload__overlay',
   BUTTON_SMALLER: '.scale__control--smaller',
@@ -57,6 +60,7 @@ const FormParameters = Object.freeze({
   EFFECT_LEVEL: '.img-upload__effect-level',
   SLIDER_ELEMENT: '.effect-level__slider',
   VALUE_ELEMENT: '.effect-level__value',
+  EFFECTS_PREVIEW: '.effects__preview',
   EFFECT_NONE: '#effect-none',
   EFFECT_CHROME: '#effect-chrome',
   EFFECT_SEPIA: '#effect-sepia',
@@ -82,7 +86,8 @@ const ErrorMessages = Object.freeze({
   ERROR_MESSAGE_3: 'Хэштеги должны начинаться с символа #.<br>',
   ERROR_MESSAGE_4: 'Хештег не должен состоять из одной #.<br>',
   ERROR_MESSAGE_5: 'Максимальная длина хештега - 20 символов, включая #.<br>',
-  ERROR_MESSAGE_6: 'Хештег после # должен содержать только буквы и числа<br>'
+  ERROR_MESSAGE_6: 'Хештег после # должен содержать только буквы и числа<br>',
+  ERROR_MESSAGE_7: `Длина комментария не может составлять больше ${FormParameters.MAX_COMMENT_LENGTH} символов`
 });
 
 export { GalleryParameters, FormParameters, ErrorMessages };

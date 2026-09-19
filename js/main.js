@@ -8,13 +8,16 @@ import { closePopupAfterSubmitForm } from './popup-helpers.js';
 
 let content;
 
-getData(showMessageErrorData)
+getData()
   .then((galleryContent) => {
     createGallery(galleryContent, GalleryParameters.FILTER_DEFAULT);
     content = galleryContent;
   })
   .then(() => {
     displaySorting(content);
+  })
+  .catch(() => {
+    showMessageErrorData();
   });
 
 uploadForm();
