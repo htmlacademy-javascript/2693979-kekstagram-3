@@ -3,8 +3,7 @@ import { showMessageErrorData } from './util.js';
 import { createGallery } from './gallery.js';
 import { getData } from './api.js';
 import { displaySorting } from './sorting.js';
-import { initUploadForm, setUserFormSubmit } from './upload-form.js';
-import { closePopupAfterSubmitForm } from './popup-helpers.js';
+import { initUploadForm } from './upload-form.js';
 
 let content;
 
@@ -21,4 +20,3 @@ getData()
   });
 
 initUploadForm();
-setUserFormSubmit(closePopupAfterSubmitForm);

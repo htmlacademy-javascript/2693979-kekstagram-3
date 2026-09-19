@@ -1,6 +1,6 @@
 import { FormParameters, ErrorMessages } from './parameters.js';
 import { hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload } from './util.js';
-import { togglePopup, createPopupCloseHandlers } from './popup-helpers.js';
+import { togglePopup, createPopupCloseHandlers, closePopupAfterSubmitForm } from './popup-helpers.js';
 import { initSlider, removeEffectsEvents, uploadBlock, imagePreview, effectNone } from './slider-effects.js';
 import { sendData } from './api.js';
 
@@ -145,33 +145,6 @@ const resetFormObject = {
   arguments: [imageInput, imagePreview, effectsPreview]
 };
 
-const initUploadForm = () => {
-  imageInput.addEventListener('change', () => {
-    togglePopup(editingBlock);
-
-    const file = imageInput.files[0];
-    const fileName = file.name.toLowerCase();
-
-    const matches = FormParameters.FILE_TYPES.some((fileType) => fileName.endsWith(fileType));
-
-    if (matches) {
-      const blobUrl = URL.createObjectURL(file);
-      imagePreview.src = blobUrl;
-      effectsPreview.forEach((preview) => {
-        preview.style.backgroundImage = `url("${blobUrl}")`;
-      });
-    }
-
-    scaleToImage();
-    initSlider();
-
-    hashtagsInput.addEventListener('keydown', stopPaginationEvent);
-    commentsText.addEventListener('keydown', stopPaginationEvent);
-
-    createPopupCloseHandlers(editingBlock, formClose, resetFormObject);
-  });
-};
-
 const blockSubmitButton = () => {
   submitButton.disabled = true;
   submitButton.textContent = 'Публикую...';
@@ -203,6 +176,35 @@ const setUserFormSubmit = (onSuccess) => {
         .finally(() => {
           unblockSubmitButton();
         });
+    }
+  });
+};
+
+const initUploadForm = () => {
+  imageInput.addEventListener('change', () => {
+    const file = imageInput.files[0];
+    if (!file) {
+      return;
+    }
+
+    const fileName = file.name.toLowerCase();
+    const matches = FormParameters.FILE_TYPES.some((fileType) => fileName.endsWith(fileType));
+
+    if (matches) {
+      togglePopup(editingBlock);
+      const blobUrl = URL.createObjectURL(file);
+      imagePreview.src = blobUrl;
+      effectsPreview.forEach((preview) => {
+        preview.style.backgroundImage = `url("${blobUrl}")`;
+      });
+      scaleToImage();
+      initSlider();
+
+      hashtagsInput.addEventListener('keydown', stopPaginationEvent);
+      commentsText.addEventListener('keydown', stopPaginationEvent);
+
+      createPopupCloseHandlers(editingBlock, formClose, resetFormObject);
+      setUserFormSubmit(closePopupAfterSubmitForm);
     }
   });
 };
