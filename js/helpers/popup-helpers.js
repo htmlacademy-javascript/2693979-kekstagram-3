@@ -1,15 +1,17 @@
-import { GalleryParameters, FormParameters } from './parameters.js';
-import { isEscapeKey } from './util.js';
+import { isEscapeKey } from '../util.js';
 import { toggleDisplayElement, togglePageScrolling } from './class-list-helpers.js';
 
-const disableScrolling = document.querySelector(GalleryParameters.DISABLE_SCROLLING_ELEMENT);
+const ERROR_DATA_CLOSE_TIME = 5000;
+
+let isPopupActive = 'popup';
 let popupContainer;
 let close;
 let additionalArguments;
-let isPopupActive = 'popup';
 let messageContainer;
 let closeUploadMessageButton;
 let messageBlock;
+
+const disableScrolling = document.querySelector('body');
 
 const togglePopup = (popup) => {
   togglePageScrolling(disableScrolling);
@@ -91,7 +93,7 @@ const createUploadMessageCloseHandlers = (button, uploadMessage, block) => {
 const closeErrorData = (uploadMessage) => {
   setTimeout(() => {
     uploadMessage.textContent = '';
-  }, FormParameters.ERROR_DATA_CLOSE_TIME);
+  }, ERROR_DATA_CLOSE_TIME);
 };
 
 export { togglePopup, createPopupCloseHandlers, closePopupAfterSubmitForm, createUploadMessageCloseHandlers, closeErrorData };
