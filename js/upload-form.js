@@ -6,6 +6,7 @@ import { sendData } from './api.js';
 
 const form = uploadBlock.querySelector(FormParameters.UPLOAD_FORM);
 const imageInput = uploadBlock.querySelector(FormParameters.UPLOAD_IMAGE_INPUT);
+const effectsPreview = uploadBlock.querySelectorAll(FormParameters.EFFECTS_PREVIEW);
 const hashtagsInput = uploadBlock.querySelector(FormParameters.HASHTAGS_INPUT);
 const commentsText = uploadBlock.querySelector(FormParameters.COMMENTS_TEXT);
 const editingBlock = uploadBlock.querySelector(FormParameters.EDITING_BLOCK);
@@ -125,6 +126,10 @@ const removeStopPaginationEvent = () => {
 const resetForm = (arrayArguments) => {
   arrayArguments[0].value = '';
   arrayArguments[1].style.filter = null;
+  arrayArguments[1].src = FormParameters.DEFAULT_IMAGE_URL;
+  arrayArguments[2].forEach((preview) => {
+    preview.style.backgroundImage = null;
+  });
   effectNone.checked = true;
   resetScale();
   removeEffectsEvents();
@@ -135,7 +140,7 @@ const resetForm = (arrayArguments) => {
 
 const resetFormObject = {
   additionalFunction: resetForm,
-  arguments: [imageInput, imagePreview]
+  arguments: [imageInput, imagePreview, effectsPreview]
 };
 
 const uploadForm = () => {
@@ -148,7 +153,11 @@ const uploadForm = () => {
     const matches = FormParameters.FILE_TYPES.some((it) => fileName.endsWith(it));
 
     if (matches) {
-      imagePreview.src = URL.createObjectURL(file);
+      const blobUrl = URL.createObjectURL(file);
+      imagePreview.src = blobUrl;
+      effectsPreview.forEach((preview) => {
+        preview.style.backgroundImage = `url("${blobUrl}")`;
+      });
     }
 
     scaleToImage();
