@@ -1,7 +1,7 @@
 import { toggleDisplayElement, checkHiddenElement } from '../helpers/class-list-helpers.js';
-import { debounce } from '../util.js';
+// import { debounce } from '../util.js';
 
-const DEBOUNCE_TIME = 500;
+// const DEBOUNCE_TIME = 500;
 const EFFECTS_RADIO = '.effects__radio';
 
 const EFFECT_CONFIGS = {
@@ -26,7 +26,7 @@ let effectFlag = 'none';
 let activeFilterButton = effectNone;
 let currentFilter = 'none';
 
-const addImageEffect = debounce((flag, rawValue) => {
+const addImageEffect = (flag, rawValue) => {
   const value = Number(rawValue);
   if (Number.isNaN(value)) {
     return;
@@ -39,7 +39,7 @@ const addImageEffect = debounce((flag, rawValue) => {
   }
 
   imagePreview.style.filter = config.filter(value);
-}, DEBOUNCE_TIME);
+};
 
 const changeSettingsEffect = (evt, flag) => {
   const config = EFFECT_CONFIGS[flag];
