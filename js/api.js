@@ -5,7 +5,7 @@ const Method = {
   POST: 'POST',
 };
 
-const load = (route, showErrorMessage, method = Method.GET, body = null) =>
+const load = (route, method = Method.GET, body = null) =>
   fetch(`${ FormParameters.BASE_URL}${ route}`, {method, body})
     .then((response) => {
       if (!response.ok) {
@@ -14,12 +14,11 @@ const load = (route, showErrorMessage, method = Method.GET, body = null) =>
       return response.json();
     })
     .catch((error) => {
-      showErrorMessage();
       throw error;
     });
 
-const getData = (showErrorMessage) => load(FormParameters.GET_DATA, showErrorMessage);
+const getData = () => load(FormParameters.GET_DATA);
 
-const sendData = (body, showErrorMessage) => load(FormParameters.SEND_DATA, showErrorMessage, Method.POST, body);
+const sendData = (body) => load(FormParameters.SEND_DATA, Method.POST, body);
 
 export { getData, sendData };

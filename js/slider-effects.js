@@ -1,5 +1,6 @@
-import { FormParameters } from './parameters.js';
+import { GalleryParameters, FormParameters } from './parameters.js';
 import { toggleDisplayElement, checkHiddenElement } from './class-list-helpers.js';
+import { debounce } from './util.js';
 
 const uploadBlock = document.querySelector(FormParameters.UPLOAD_BLOCK);
 const imagePreviewContainer = uploadBlock.querySelector(FormParameters.UPLOAD_IMAGE_PREVIEW);
@@ -13,149 +14,98 @@ const effectSepia = uploadBlock.querySelector(FormParameters.EFFECT_SEPIA);
 const effectMarvin = uploadBlock.querySelector(FormParameters.EFFECT_MARVIN);
 const effectPhobos = uploadBlock.querySelector(FormParameters.EFFECT_PHOBOS);
 const effectHeat = uploadBlock.querySelector(FormParameters.EFFECT_HEAT);
+
 let effectFlag = 'None';
 
-const addImageEffect = (flag, value) => {
-  if (flag === 'None') {
+const EFFECT_CONFIGS = {
+  None: { range: [0, 10], start: 10, step: 1, filter: () => null },
+  Chrome: { range: [0, 1], start: 1, step: 0.1, filter: (v) => `grayscale(${v})` },
+  Sepia: { range: [0, 1], start: 1, step: 0.1, filter: (v) => `sepia(${v})` },
+  Marvin: { range: [0, 100], start: 100, step: 1, filter: (v) => `invert(${v}%)` },
+  Phobos: { range: [0, 3], start: 3, step: 0.1, filter: (v) => `blur(${v}px)` },
+  Heat: { range: [1, 3], start: 3, step: 0.1, filter: (v) => `brightness(${v})` },
+};
+
+const addImageEffect = debounce((flag, rawValue) => {
+  const value = Number(rawValue);
+  if (Number.isNaN(value)) {
+    return;
+  }
+
+  const config = EFFECT_CONFIGS[flag];
+  if (!config || !config.filter) {
     imagePreview.style.filter = null;
+    return;
   }
 
-  if (flag === 'Chrome') {
-    imagePreview.style.filter = `grayscale(${ value})`;
+  imagePreview.style.filter = config.filter(value);
+}, GalleryParameters.DEBOUNCE_TIME);
+
+// const changeSettingsEffect = (evt, flag) => {
+//   if (checkHiddenElement(effectLevel)) {
+//     toggleDisplayElement(effectLevel);
+//   }
+
+//   const config = EFFECT_CONFIGS[flag];
+//   if (!config) {
+//     return;
+//   }
+
+//   if (evt.target.checked) {
+//     sliderElement.noUiSlider.updateOptions({
+//       range: { min: config.range[0], max: config.range[1] },
+//       start: config.start,
+//       step: config.step,
+//     });
+//   }
+
+//   effectFlag = flag;
+//   addImageEffect(effectFlag, valueElement.value);
+// };
+
+const changeSettingsEffect = (evt, flag) => {
+  const config = EFFECT_CONFIGS[flag];
+  if (!config) {
+    return;
   }
 
-  if (flag === 'Sepia') {
-    imagePreview.style.filter = `sepia(${ value})`;
+  // Для None — скрываем панель, для остальных — показываем
+  if (flag === 'None') {
+    if (!checkHiddenElement(effectLevel)) {
+      toggleDisplayElement(effectLevel);
+    }
+  } else {
+    if (checkHiddenElement(effectLevel)) {
+      toggleDisplayElement(effectLevel);
+    }
   }
 
-  if (flag === 'Marvin') {
-    imagePreview.style.filter = `invert(${ value}%)`;
-  }
-
-  if (flag === 'Phobos') {
-    imagePreview.style.filter = `blur(${ value}px)`;
-  }
-
-  if (flag === 'Heat') {
-    imagePreview.style.filter = `brightness(${ value})`;
-  }
-};
-
-const changeSettingsEffectNone = (evt) => {
-  if (!checkHiddenElement(effectLevel)) {
-    toggleDisplayElement(effectLevel);
-  }
   if (evt.target.checked) {
     sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 10,
-      },
-      start: 10,
-      step: 1,
+      range: { min: config.range[0], max: config.range[1] },
+      start: config.start,
+      step: config.step,
     });
   }
-  effectFlag = 'None';
+
+  effectFlag = flag;
   addImageEffect(effectFlag, valueElement.value);
 };
 
-const changeSettingsEffectChrome = (evt) => {
-  if (checkHiddenElement(effectLevel)) {
-    toggleDisplayElement(effectLevel);
-  }
-  if (evt.target.checked) {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      start: 1,
-      step: 0.1,
-    });
-  }
-  effectFlag = 'Chrome';
-  addImageEffect(effectFlag, valueElement.value);
-};
-
-const changeSettingsEffectSepia = (evt) => {
-  if (checkHiddenElement(effectLevel)) {
-    toggleDisplayElement(effectLevel);
-  }
-  if (evt.target.checked) {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      start: 1,
-      step: 0.1,
-    });
-  }
-  effectFlag = 'Sepia';
-  addImageEffect(effectFlag, valueElement.value);
-};
-
-const changeSettingsEffectMarvin = (evt) => {
-  if (checkHiddenElement(effectLevel)) {
-    toggleDisplayElement(effectLevel);
-  }
-  if (evt.target.checked) {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 100,
-      },
-      start: 100,
-      step: 1,
-    });
-  }
-  effectFlag = 'Marvin';
-  addImageEffect(effectFlag, valueElement.value);
-};
-
-const changeSettingsEffectPhobos = (evt) => {
-  if (checkHiddenElement(effectLevel)) {
-    toggleDisplayElement(effectLevel);
-  }
-  if (evt.target.checked) {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 3,
-      },
-      start: 3,
-      step: 0.1,
-    });
-  }
-  effectFlag = 'Phobos';
-  addImageEffect(effectFlag, valueElement.value);
-};
-
-const changeSettingsEffectHeat = (evt) => {
-  if (checkHiddenElement(effectLevel)) {
-    toggleDisplayElement(effectLevel);
-  }
-  if (evt.target.checked) {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 1,
-        max: 3,
-      },
-      start: 3,
-      step: 0.1,
-    });
-  }
-  effectFlag = 'Heat';
-  addImageEffect(effectFlag, valueElement.value);
-};
+const handlerNone = (evt) => changeSettingsEffect(evt, 'None');
+const handlerChrome = (evt) => changeSettingsEffect(evt, 'Chrome');
+const handlerSepia = (evt) => changeSettingsEffect(evt, 'Sepia');
+const handlerMarvin = (evt) => changeSettingsEffect(evt, 'Marvin');
+const handlerPhobos = (evt) => changeSettingsEffect(evt, 'Phobos');
+const handlerHeat = (evt) => changeSettingsEffect(evt, 'Heat');
 
 const removeEffectsEvents = () => {
-  effectNone.removeEventListener('change', changeSettingsEffectNone);
-  effectChrome.removeEventListener('change', changeSettingsEffectChrome);
-  effectSepia.removeEventListener('change', changeSettingsEffectSepia);
-  effectMarvin.removeEventListener('change', changeSettingsEffectMarvin);
-  effectPhobos.removeEventListener('change', changeSettingsEffectPhobos);
-  effectHeat.removeEventListener('change', changeSettingsEffectHeat);
+  effectNone.removeEventListener('change', handlerNone);
+  effectChrome.removeEventListener('change', handlerChrome);
+  effectSepia.removeEventListener('change', handlerSepia);
+  effectMarvin.removeEventListener('change', handlerMarvin);
+  effectPhobos.removeEventListener('change', handlerPhobos);
+  effectHeat.removeEventListener('change', handlerHeat);
 };
 
 const sliderInit = () => {
@@ -188,12 +138,12 @@ const sliderInit = () => {
     effectFlag = 'None';
   }
 
-  effectNone.addEventListener('change', changeSettingsEffectNone);
-  effectChrome.addEventListener('change', changeSettingsEffectChrome);
-  effectSepia.addEventListener('change', changeSettingsEffectSepia);
-  effectMarvin.addEventListener('change', changeSettingsEffectMarvin);
-  effectPhobos.addEventListener('change', changeSettingsEffectPhobos);
-  effectHeat.addEventListener('change', changeSettingsEffectHeat);
+  effectNone.addEventListener('change', handlerNone);
+  effectChrome.addEventListener('change', handlerChrome);
+  effectSepia.addEventListener('change', handlerSepia);
+  effectMarvin.addEventListener('change', handlerMarvin);
+  effectPhobos.addEventListener('change', handlerPhobos);
+  effectHeat.addEventListener('change', handlerHeat);
 
   sliderElement.noUiSlider.on('update', () => {
     valueElement.value = sliderElement.noUiSlider.get();
@@ -201,4 +151,4 @@ const sliderInit = () => {
   });
 };
 
-export { sliderInit, removeEffectsEvents, uploadBlock, imagePreview };
+export { sliderInit, removeEffectsEvents, uploadBlock, imagePreview, effectNone };
