@@ -5,6 +5,7 @@ import { debounce } from './util.js';
 const imageFilters = document.querySelector(GalleryParameters.IMAGE_FILTERS);
 const buttonClass = GalleryParameters.IMAGE_FILTERS_BUTTON;
 const buttonActiveClass = GalleryParameters.IMAGE_FILTERS_BUTTON_ACTIVE;
+let activeFilterButton = imageFilters.querySelector(`.${buttonActiveClass}`);
 let currentFilter = GalleryParameters.FILTER_DEFAULT;
 
 const displaySorting = (content) => {
@@ -16,34 +17,34 @@ const displaySorting = (content) => {
   );
 
   imageFilters.addEventListener('click', (evt) => {
-    const target = evt.target.closest(`.${buttonClass}`); // безопаснее, чем evt.target
+    const target = evt.target.closest(`.${buttonClass}`);
+
     if (!target) {
       return;
     }
 
-    const clickedButton = evt.target;
-    if (clickedButton.id === currentFilter) {
+    if (target === activeFilterButton) {
       return;
     }
 
-    imageFilters
-      .querySelector(`.${buttonActiveClass}`)
-      .classList.remove(buttonActiveClass);
-    clickedButton.classList.add(buttonActiveClass);
-    currentFilter = clickedButton.id;
+    activeFilterButton.classList.remove(buttonActiveClass);
 
+    target.classList.add(buttonActiveClass);
+    activeFilterButton = target;
+
+    currentFilter = target.id;
     debouncedCreateGallery();
   });
 };
 
-const sortingRandom = (array) => {
-  const shuffled = array.slice().sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, GalleryParameters.MAX_RANDOM_IMAGES);
+const sortingRandom = (pictures) => {
+  const shuffledPictures = pictures.slice().sort(() => 0.5 - Math.random());
+  return shuffledPictures.slice(0, GalleryParameters.MAX_RANDOM_IMAGES);
 };
 
-const sortingDiscussed = (array) => {
-  const shuffled = array.slice().sort((elementA, elementB) => elementB.comments.length - elementA.comments.length);
-  return shuffled;
+const sortingDiscussed = (pictures) => {
+  const shuffledPictures = pictures.slice().sort((elementA, elementB) => elementB.comments.length - elementA.comments.length);
+  return shuffledPictures;
 };
 
 export { displaySorting, sortingRandom, sortingDiscussed };

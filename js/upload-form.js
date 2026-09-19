@@ -1,7 +1,7 @@
 import { FormParameters, ErrorMessages } from './parameters.js';
 import { hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload } from './util.js';
 import { togglePopup, createPopupCloseHandlers } from './popup-helpers.js';
-import { sliderInit, removeEffectsEvents, uploadBlock, imagePreview, effectNone } from './slider-effects.js';
+import { initSlider, removeEffectsEvents, uploadBlock, imagePreview, effectNone } from './slider-effects.js';
 import { sendData } from './api.js';
 
 const form = uploadBlock.querySelector(FormParameters.UPLOAD_FORM);
@@ -22,25 +22,26 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-const maxScale = 1;
-const minScale = 0.25;
+const MAX_SCALE = 1;
+const MIN_SCALE = 0.25;
+const STEP = 0.25;
+const SCALE_DEFAULT_VALUE = '100%';
+const SCALE_A_PERCENT = 100;
 let scale = 1;
-const step = 0.25;
-const scaleDefaultValue = '100%';
 
 const scaleSmaller = () => {
-  if (scale > minScale) {
-    scale -= step;
+  if (scale > MIN_SCALE) {
+    scale -= STEP;
     imagePreview.style.transform = `scale(${ scale})`;
-    scaleInput.value = `${scale * 100 }%`;
+    scaleInput.value = `${scale * SCALE_A_PERCENT }%`;
   }
 };
 
 const scaleBigger = () => {
-  if (scale < maxScale) {
-    scale += step;
+  if (scale < MAX_SCALE) {
+    scale += STEP;
     imagePreview.style.transform = `scale(${ scale})`;
-    scaleInput.value = `${scale * 100 }%`;
+    scaleInput.value = `${scale * SCALE_A_PERCENT }%`;
   }
 };
 
@@ -69,7 +70,7 @@ const validateHashtags = (value) => {
     isValid = true;
   }
 
-  for (const hashtag of hashtags) {
+  hashtags.forEach((hashtag) => {
     if (hashtag[0] !== '#' && hashtag !== '') {
       errors.add(ErrorMessages.ERROR_MESSAGE_3);
       isValid = true;
@@ -86,8 +87,9 @@ const validateHashtags = (value) => {
       errors.add(ErrorMessages.ERROR_MESSAGE_6);
       isValid = true;
     }
-    errorHashtagsMessage = Array.from(errors).join('');
-  }
+  });
+  errorHashtagsMessage = Array.from(errors).join('');
+
   return !isValid;
 };
 
@@ -106,7 +108,7 @@ const resetScale = () => {
   imagePreview.style.transform = null;
   buttonSmaller.removeEventListener('click', scaleSmaller);
   buttonBigger.removeEventListener('click', scaleBigger);
-  scaleInput.value = scaleDefaultValue;
+  scaleInput.value = SCALE_DEFAULT_VALUE;
 };
 
 const resetFormTextFields = () => {
@@ -143,14 +145,14 @@ const resetFormObject = {
   arguments: [imageInput, imagePreview, effectsPreview]
 };
 
-const uploadForm = () => {
+const initUploadForm = () => {
   imageInput.addEventListener('change', () => {
     togglePopup(editingBlock);
 
     const file = imageInput.files[0];
     const fileName = file.name.toLowerCase();
 
-    const matches = FormParameters.FILE_TYPES.some((it) => fileName.endsWith(it));
+    const matches = FormParameters.FILE_TYPES.some((fileType) => fileName.endsWith(fileType));
 
     if (matches) {
       const blobUrl = URL.createObjectURL(file);
@@ -161,7 +163,7 @@ const uploadForm = () => {
     }
 
     scaleToImage();
-    sliderInit();
+    initSlider();
 
     hashtagsInput.addEventListener('keydown', stopPaginationEvent);
     commentsText.addEventListener('keydown', stopPaginationEvent);
@@ -205,4 +207,4 @@ const setUserFormSubmit = (onSuccess) => {
   });
 };
 
-export { uploadForm, setUserFormSubmit };
+export { initUploadForm, setUserFormSubmit };
