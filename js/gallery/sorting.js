@@ -1,23 +1,26 @@
-import { GalleryParameters } from './parameters.js';
 import { createGallery } from './gallery.js';
-import { debounce } from './util.js';
+import { debounce } from '../util.js';
 
-const imageFilters = document.querySelector(GalleryParameters.IMAGE_FILTERS);
-const buttonClass = GalleryParameters.IMAGE_FILTERS_BUTTON;
-const buttonActiveClass = GalleryParameters.IMAGE_FILTERS_BUTTON_ACTIVE;
-let activeFilterButton = imageFilters.querySelector(`.${buttonActiveClass}`);
-let currentFilter = GalleryParameters.FILTER_DEFAULT;
+const BUTTON_CLASS = 'img-filters__button';
+const BUTTON_ACTIVE_CLASS = 'img-filters__button--active';
+const IMAGE_FILTERS_INACTIVE = 'img-filters--inactive';
+const MAX_RANDOM_IMAGES = 10;
+const DEBOUNCE_TIME = 500;
+
+const imageFilters = document.querySelector('.img-filters');
+let activeFilterButton = imageFilters.querySelector(`.${BUTTON_ACTIVE_CLASS}`);
+let currentFilter = 'filter-default';
 
 const displaySorting = (content) => {
-  imageFilters.classList.remove(GalleryParameters.IMAGE_FILTERS_INACTIVE);
+  imageFilters.classList.remove(IMAGE_FILTERS_INACTIVE);
 
   const debouncedCreateGallery = debounce(
     () => createGallery(content, currentFilter),
-    GalleryParameters.DEBOUNCE_TIME
+    DEBOUNCE_TIME
   );
 
   imageFilters.addEventListener('click', (evt) => {
-    const target = evt.target.closest(`.${buttonClass}`);
+    const target = evt.target.closest(`.${BUTTON_CLASS}`);
 
     if (!target) {
       return;
@@ -27,11 +30,9 @@ const displaySorting = (content) => {
       return;
     }
 
-    activeFilterButton.classList.remove(buttonActiveClass);
-
-    target.classList.add(buttonActiveClass);
+    activeFilterButton.classList.remove(BUTTON_ACTIVE_CLASS);
+    target.classList.add(BUTTON_ACTIVE_CLASS);
     activeFilterButton = target;
-
     currentFilter = target.id;
     debouncedCreateGallery();
   });
@@ -39,7 +40,7 @@ const displaySorting = (content) => {
 
 const sortingRandom = (pictures) => {
   const shuffledPictures = pictures.slice().sort(() => 0.5 - Math.random());
-  return shuffledPictures.slice(0, GalleryParameters.MAX_RANDOM_IMAGES);
+  return shuffledPictures.slice(0, MAX_RANDOM_IMAGES);
 };
 
 const sortingDiscussed = (pictures) => {

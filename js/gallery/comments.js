@@ -1,34 +1,37 @@
-import { GalleryParameters } from './parameters.js';
-import { toggleDisplayElement } from './class-list-helpers.js';
+import { toggleDisplayElement } from '../helpers/class-list-helpers.js';
 
-const socialContainer = document.querySelector(GalleryParameters.SOCIAL_CONTAINER);
-const socialComments = socialContainer.querySelector(GalleryParameters.SOCIAL_COMMENTS);
-const countShowComments = GalleryParameters.SHOWN_COMMENTS_LENGTH;
-const countShownComments = socialContainer.querySelector(GalleryParameters.COUNT_SHOWN_COMMENTS);
-const countTotalComments = socialContainer.querySelector(GalleryParameters.COUNT_TOTAL_COMMENTS);
-const commentsText = socialContainer.querySelector(GalleryParameters.COMMENTS_TEXT);
-const commentsLoader = socialContainer.querySelector(GalleryParameters.COMMENTS_LOADER_BUTTON);
+const SHOWN_COMMENTS_LENGTH = 5;
+const COMMENT_TAG = 'li';
+const COMMENT_TEXT_TAG = 'p';
+const COMMENT_ITEM_CLASS = 'social__comment';
+const TEXT_CLASS = 'social__text';
+const AVATAR = 'social__picture';
+const AVATAR_WIDTH = 35;
+const AVATAR_HEIGHT = 35;
 
-const commentTag = GalleryParameters.COMMENT_TAG;
-const commentTextTag = GalleryParameters.COMMENT_TEXT_TAG;
-const commentItemClass = GalleryParameters.COMMENT_ITEM;
-const textClass = GalleryParameters.COMMENT_TEXT;
 let startComment = 0;
 let countMaxComments = 0;
 
+const socialContainer = document.querySelector('.social');
+const socialComments = socialContainer.querySelector('.social__comments');
+const countShownComments = socialContainer.querySelector('.social__comment-shown-count');
+const countTotalComments = socialContainer.querySelector('.social__comment-total-count');
+const commentsText = socialContainer.querySelector('.social__comment-text');
+const commentsLoader = socialContainer.querySelector('.comments-loader');
+
 const createCommentAvatar = (avatar, name) => {
   const userAvatar = document.createElement('img');
-  userAvatar.classList.add(GalleryParameters.AVATAR);
+  userAvatar.classList.add(AVATAR);
   userAvatar.setAttribute('src', avatar);
   userAvatar.setAttribute('alt', name);
-  userAvatar.setAttribute('width', GalleryParameters.AVATAR_WIDTH);
-  userAvatar.setAttribute('height', GalleryParameters.AVATAR_HEIGHT);
+  userAvatar.setAttribute('width', AVATAR_WIDTH);
+  userAvatar.setAttribute('height', AVATAR_HEIGHT);
   return userAvatar;
 };
 
 const createCommentText = (message) => {
-  const commentText = document.createElement(commentTextTag);
-  commentText.classList.add(textClass);
+  const commentText = document.createElement(COMMENT_TEXT_TAG);
+  commentText.classList.add(TEXT_CLASS);
   commentText.textContent = message;
   return commentText;
 };
@@ -36,8 +39,8 @@ const createCommentText = (message) => {
 const createCommentsList = (dataComments, startShowComments, endShowComments) => {
   const commentsList = document.createDocumentFragment();
   for (let i = startShowComments; i < endShowComments; i++) {
-    const commentItem = document.createElement(commentTag);
-    commentItem.classList.add(commentItemClass);
+    const commentItem = document.createElement(COMMENT_TAG);
+    commentItem.classList.add(COMMENT_ITEM_CLASS);
     commentItem.appendChild(createCommentAvatar(dataComments[i].avatar, dataComments[i].name));
     commentItem.appendChild(createCommentText(dataComments[i].message));
     commentsList.appendChild(commentItem);
@@ -78,10 +81,10 @@ const resetCountComments = () => {
 const showComments = (data, buttonLoaded) => {
   if (!buttonLoaded) {
     socialComments.textContent = '';
-    countMaxComments = countShowComments;
+    countMaxComments = SHOWN_COMMENTS_LENGTH;
   } else {
-    startComment += countShowComments;
-    countMaxComments = startComment + countShowComments;
+    startComment += SHOWN_COMMENTS_LENGTH;
+    countMaxComments = startComment + SHOWN_COMMENTS_LENGTH;
   }
 
   if (countMaxComments >= data.comments.length) {

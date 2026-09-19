@@ -1,6 +1,8 @@
-import { GalleryParameters, FormParameters } from './parameters.js';
-import { toggleDisplayElement, checkHiddenElement } from './class-list-helpers.js';
-import { debounce } from './util.js';
+import { toggleDisplayElement, checkHiddenElement } from '../helpers/class-list-helpers.js';
+import { debounce } from '../util.js';
+
+const DEBOUNCE_TIME = 500;
+const EFFECTS_RADIO = '.effects__radio';
 
 const EFFECT_CONFIGS = {
   none: { range: [0, 10], start: 10, step: 1, filter: () => null },
@@ -11,20 +13,18 @@ const EFFECT_CONFIGS = {
   heat: { range: [1, 3], start: 3, step: 0.1, filter: (value) => `brightness(${value})` },
 };
 
-const uploadBlock = document.querySelector(FormParameters.UPLOAD_BLOCK);
-const imagePreviewContainer = uploadBlock.querySelector(FormParameters.UPLOAD_IMAGE_PREVIEW);
+const uploadBlock = document.querySelector('.img-upload');
+const imagePreviewContainer = uploadBlock.querySelector('.img-upload__preview');
 const imagePreview = imagePreviewContainer.querySelector('img');
-const effectLevel = uploadBlock.querySelector(FormParameters.EFFECT_LEVEL);
-const sliderElement = uploadBlock.querySelector(FormParameters.SLIDER_ELEMENT);
-const valueElement = uploadBlock.querySelector(FormParameters.VALUE_ELEMENT);
-const effectNone = uploadBlock.querySelector(FormParameters.EFFECT_NONE);
-const effectChrome = uploadBlock.querySelector(FormParameters.EFFECT_CHROME);
-const effectSepia = uploadBlock.querySelector(FormParameters.EFFECT_SEPIA);
-const effectMarvin = uploadBlock.querySelector(FormParameters.EFFECT_MARVIN);
-const effectPhobos = uploadBlock.querySelector(FormParameters.EFFECT_PHOBOS);
-const effectHeat = uploadBlock.querySelector(FormParameters.EFFECT_HEAT);
+const effectLevel = uploadBlock.querySelector('.img-upload__effect-level');
+const sliderElement = uploadBlock.querySelector('.effect-level__slider');
+const valueElement = uploadBlock.querySelector('.effect-level__value');
+const effectsContainer = uploadBlock.querySelector('.img-upload__effects');
+const effectNone = uploadBlock.querySelector('#effect-none');
 
 let effectFlag = 'none';
+let activeFilterButton = effectNone;
+let currentFilter = 'none';
 
 const addImageEffect = debounce((flag, rawValue) => {
   const value = Number(rawValue);
@@ -39,7 +39,7 @@ const addImageEffect = debounce((flag, rawValue) => {
   }
 
   imagePreview.style.filter = config.filter(value);
-}, GalleryParameters.DEBOUNCE_TIME);
+}, DEBOUNCE_TIME);
 
 const changeSettingsEffect = (evt, flag) => {
   const config = EFFECT_CONFIGS[flag];
@@ -69,20 +69,26 @@ const changeSettingsEffect = (evt, flag) => {
   addImageEffect(effectFlag, valueElement.value);
 };
 
-const onEffectNoneChange = (evt) => changeSettingsEffect(evt, 'none');
-const onEffectChromeChange = (evt) => changeSettingsEffect(evt, 'chrome');
-const onEffectSepiaChange = (evt) => changeSettingsEffect(evt, 'sepia');
-const onEffectMarvinChange = (evt) => changeSettingsEffect(evt, 'marvin');
-const onEffectPhobosChange = (evt) => changeSettingsEffect(evt, 'phobos');
-const onEffectHeatChange = (evt) => changeSettingsEffect(evt, 'heat');
+const switchFilter = (evt) => {
+  const target = evt.target.closest(EFFECTS_RADIO);
+
+  if (!target) {
+    return;
+  }
+
+  if (target === activeFilterButton) {
+    return;
+  }
+
+  target.checked = true;
+  activeFilterButton = target;
+  const id = target.id;
+  currentFilter = id.replace('effect-', '');
+  changeSettingsEffect(evt, currentFilter);
+};
 
 const removeEffectsEvents = () => {
-  effectNone.removeEventListener('change', onEffectNoneChange);
-  effectChrome.removeEventListener('change', onEffectChromeChange);
-  effectSepia.removeEventListener('change', onEffectSepiaChange);
-  effectMarvin.removeEventListener('change', onEffectMarvinChange);
-  effectPhobos.removeEventListener('change', onEffectPhobosChange);
-  effectHeat.removeEventListener('change', onEffectHeatChange);
+  effectsContainer.removeEventListener('change', switchFilter);
 };
 
 const initSlider = () => {
@@ -119,12 +125,7 @@ const initSlider = () => {
     effectFlag = 'none';
   }
 
-  effectNone.addEventListener('change', onEffectNoneChange);
-  effectChrome.addEventListener('change', onEffectChromeChange);
-  effectSepia.addEventListener('change', onEffectSepiaChange);
-  effectMarvin.addEventListener('change', onEffectMarvinChange);
-  effectPhobos.addEventListener('change', onEffectPhobosChange);
-  effectHeat.addEventListener('change', onEffectHeatChange);
+  effectsContainer.addEventListener('change', switchFilter);
 };
 
 export { initSlider, removeEffectsEvents, uploadBlock, imagePreview, effectNone };

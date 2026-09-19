@@ -1,16 +1,16 @@
-import { FormParameters } from './parameters.js';
-import { createUploadMessageCloseHandlers, closeErrorData } from './popup-helpers.js';
+import { createUploadMessageCloseHandlers, closeErrorData } from './helpers/popup-helpers.js';
 
-const uploadMessage = document.querySelector(FormParameters.UPLOAD_MESSAGE);
+const ERROR_TEMPLATE = '#error';
+const ERROR_BUTTON = '.error__button';
+const ERROR_INNER = '.error__inner';
+const SUCCESS_TEMPLATE = '#success';
+const SUCCESS_BUTTON = '.success__button';
+const SUCCESS_INNER = '.success__inner';
+const ERROR_DATA_TEMPLATE = '#data-error';
+
+const uploadMessage = document.querySelector('.upload-message');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
-
-const hasDuplicatesIgnoreCase = (array) => {
-  const normalized = array.map((item) =>
-    typeof item === 'string' ? item.toLocaleLowerCase() : item
-  );
-  return new Set(normalized).size !== normalized.length;
-};
 
 const showMessage = (template, button = false, inner = false, autoClose = false) => {
   const messageTemplate = document.querySelector(template).content;
@@ -32,15 +32,15 @@ const showMessage = (template, button = false, inner = false, autoClose = false)
 };
 
 const showMessageErrorUpload = () => {
-  showMessage(FormParameters.ERROR_TEMPLATE, FormParameters.ERROR_BUTTON, FormParameters.ERROR_INNER);
+  showMessage(ERROR_TEMPLATE, ERROR_BUTTON, ERROR_INNER);
 };
 
 const showMessageSuccessUpload = () => {
-  showMessage(FormParameters.SUCCESS_TEMPLATE, FormParameters.SUCCESS_BUTTON, FormParameters.SUCCESS_INNER);
+  showMessage(SUCCESS_TEMPLATE, SUCCESS_BUTTON, SUCCESS_INNER);
 };
 
 const showMessageErrorData = () => {
-  showMessage(FormParameters.ERROR_DATA_TEMPLATE, false, false, closeErrorData);
+  showMessage(ERROR_DATA_TEMPLATE, false, false, closeErrorData);
 };
 
 const debounce = (callback, timeoutDelay) => {
@@ -51,4 +51,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export { isEscapeKey, hasDuplicatesIgnoreCase, showMessageErrorUpload, showMessageSuccessUpload, showMessageErrorData, debounce };
+export { isEscapeKey, showMessageErrorUpload, showMessageSuccessUpload, showMessageErrorData, debounce };

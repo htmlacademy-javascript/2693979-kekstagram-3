@@ -1,15 +1,12 @@
-import { GalleryParameters } from './parameters.js';
-import { toggleDisplayElement, checkHiddenElement } from './class-list-helpers.js';
-import { togglePopup, createPopupCloseHandlers } from './popup-helpers.js';
+import { toggleDisplayElement, checkHiddenElement } from '../helpers/class-list-helpers.js';
+import { togglePopup, createPopupCloseHandlers } from '../helpers/popup-helpers.js';
 import { commentsLoader, showComments, resetCountComments, displayCountShowComments, displayCountTotalComments } from './comments.js';
 
-const bigPhotoContainer = document.querySelector(GalleryParameters.BIG_PHOTO_CONTAINER);
-const bigPhoto = bigPhotoContainer
-  .querySelector(GalleryParameters.BIG_PHOTO_IMG)
-  .querySelector('img');
-const bigPhotoDescription = bigPhotoContainer.querySelector(GalleryParameters.BIG_PHOTO_DESCRIPTION);
-const bigPhotoLikes = bigPhotoContainer.querySelector(GalleryParameters.BIG_PHOTO_LIKES);
-const bigPhotoClose = bigPhotoContainer.querySelector(GalleryParameters.BIG_PHOTO_CLOSE);
+const bigPhotoContainer = document.querySelector('.big-picture');
+const bigPhoto = bigPhotoContainer.querySelector('.big-picture__img').querySelector('img');
+const bigPhotoDescription = bigPhotoContainer.querySelector('.social__caption');
+const bigPhotoLikes = bigPhotoContainer.querySelector('.likes-count');
+const bigPhotoClose = bigPhotoContainer.querySelector('.big-picture__cancel');
 
 const resetComments = (arrayArguments) => {
   if (checkHiddenElement(arrayArguments[0])) {
