@@ -1,7 +1,5 @@
 import { toggleDisplayElement, checkHiddenElement } from '../helpers/class-list-helpers.js';
-// import { debounce } from '../util.js';
 
-// const DEBOUNCE_TIME = 500;
 const EFFECTS_RADIO = '.effects__radio';
 
 const EFFECT_CONFIGS = {
