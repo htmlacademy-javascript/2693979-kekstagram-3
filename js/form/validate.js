@@ -37,7 +37,7 @@ const validateHashtags = (value) => {
   }
 
   hashtags.forEach((hashtag) => {
-    if (hashtag[0] !== '#' && hashtag !== '') {
+    if (hashtag[0] !== '#') {
       errors.add(ERROR_MESSAGE_3);
       isValid = true;
     }
