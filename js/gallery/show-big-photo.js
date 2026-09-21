@@ -27,18 +27,18 @@ const showBigPhoto = (galleryElement) => {
   displayCountShowComments(countStartShowComments);
   displayCountTotalComments(galleryElement.comments.length);
 
-  const showNextComments = () => {
+  const onShowNextCommentsClick = () => {
     const countShowComments = showComments(galleryElement, true);
     displayCountShowComments(countShowComments);
   };
 
   if (!checkHiddenElement(commentsLoader)) {
-    commentsLoader.addEventListener('click', showNextComments);
+    commentsLoader.addEventListener('click', onShowNextCommentsClick);
   }
 
   const resetCommentsObject = {
     additionalFunction: resetComments,
-    arguments: [commentsLoader, showNextComments]
+    arguments: [commentsLoader, onShowNextCommentsClick]
   };
 
   createPopupCloseHandlers(bigPhotoContainer, bigPhotoClose, resetCommentsObject);

@@ -38,13 +38,19 @@ const createCommentText = (message) => {
 
 const createCommentsList = (dataComments, startShowComments, endShowComments) => {
   const commentsList = document.createDocumentFragment();
-  for (let i = startShowComments; i < endShowComments; i++) {
-    const commentItem = document.createElement(COMMENT_TAG);
-    commentItem.classList.add(COMMENT_ITEM_CLASS);
-    commentItem.appendChild(createCommentAvatar(dataComments[i].avatar, dataComments[i].name));
-    commentItem.appendChild(createCommentText(dataComments[i].message));
-    commentsList.appendChild(commentItem);
-  }
+
+  dataComments
+    .slice(startShowComments, endShowComments)
+    .forEach((comment) => {
+      const commentItem = document.createElement(COMMENT_TAG);
+      commentItem.classList.add(COMMENT_ITEM_CLASS);
+
+      commentItem.appendChild(createCommentAvatar(comment.avatar, comment.name));
+      commentItem.appendChild(createCommentText(comment.message));
+
+      commentsList.appendChild(commentItem);
+    });
+
   return commentsList;
 };
 

@@ -2,7 +2,7 @@ import { toggleDisplayElement, checkHiddenElement } from '../helpers/class-list-
 
 const EFFECTS_RADIO = '.effects__radio';
 
-const EFFECT_CONFIGS = {
+const EFFECT_OPTIONS = {
   none: { range: [0, 10], start: 10, step: 1, filter: () => null },
   chrome: { range: [0, 1], start: 1, step: 0.1, filter: (value) => `grayscale(${value})` },
   sepia: { range: [0, 1], start: 1, step: 0.1, filter: (value) => `sepia(${value})` },
@@ -15,8 +15,8 @@ const uploadBlock = document.querySelector('.img-upload');
 const imagePreviewContainer = uploadBlock.querySelector('.img-upload__preview');
 const imagePreview = imagePreviewContainer.querySelector('img');
 const effectLevel = uploadBlock.querySelector('.img-upload__effect-level');
-const sliderElement = uploadBlock.querySelector('.effect-level__slider');
-const valueElement = uploadBlock.querySelector('.effect-level__value');
+const slider = uploadBlock.querySelector('.effect-level__slider');
+const effectValue = uploadBlock.querySelector('.effect-level__value');
 const effectsContainer = uploadBlock.querySelector('.img-upload__effects');
 const effectNone = uploadBlock.querySelector('#effect-none');
 
@@ -30,18 +30,18 @@ const addImageEffect = (flag, rawValue) => {
     return;
   }
 
-  const config = EFFECT_CONFIGS[flag];
-  if (!config || !config.filter) {
+  const option = EFFECT_OPTIONS[flag];
+  if (!option || !option.filter) {
     imagePreview.style.filter = null;
     return;
   }
 
-  imagePreview.style.filter = config.filter(value);
+  imagePreview.style.filter = option.filter(value);
 };
 
 const changeSettingsEffect = (evt, flag) => {
-  const config = EFFECT_CONFIGS[flag];
-  if (!config) {
+  const option = EFFECT_OPTIONS[flag];
+  if (!option) {
     return;
   }
 
@@ -56,18 +56,18 @@ const changeSettingsEffect = (evt, flag) => {
   }
 
   if (evt.target.checked) {
-    sliderElement.noUiSlider.updateOptions({
-      range: { min: config.range[0], max: config.range[1] },
-      start: config.start,
-      step: config.step,
+    slider.noUiSlider.updateOptions({
+      range: { min: option.range[0], max: option.range[1] },
+      start: option.start,
+      step: option.step,
     });
   }
 
   effectFlag = flag;
-  addImageEffect(effectFlag, valueElement.value);
+  addImageEffect(effectFlag, effectValue.value);
 };
 
-const switchFilter = (evt) => {
+const onSwitchFilterChange = (evt) => {
   const target = evt.target.closest(EFFECTS_RADIO);
 
   if (!target) {
@@ -86,7 +86,10 @@ const switchFilter = (evt) => {
 };
 
 const removeEffectsEvents = () => {
-  effectsContainer.removeEventListener('change', switchFilter);
+  effectsContainer.removeEventListener('change', onSwitchFilterChange);
+  effectFlag = 'none';
+  activeFilterButton = effectNone;
+  currentFilter = 'none';
 };
 
 const initSlider = () => {
@@ -94,14 +97,12 @@ const initSlider = () => {
     toggleDisplayElement(effectLevel);
   }
 
-  if (!sliderElement.noUiSlider) {
-    noUiSlider.create(sliderElement, {
-      range: {
-        min: 0,
-        max: 10,
-      },
-      start: 10,
-      step: 1,
+  if (!slider.noUiSlider) {
+    const option = EFFECT_OPTIONS['none'];
+    noUiSlider.create(slider, {
+      range: { min: option.range[0], max: option.range[1] },
+      start: option.start,
+      step: option.step,
       connect: 'lower',
       format: {
         to: function (value) {
@@ -115,15 +116,15 @@ const initSlider = () => {
         }
       }
     });
-    sliderElement.noUiSlider.on('update', () => {
-      valueElement.value = sliderElement.noUiSlider.get();
-      addImageEffect(effectFlag, valueElement.value);
+    slider.noUiSlider.on('update', () => {
+      effectValue.value = slider.noUiSlider.get();
+      addImageEffect(effectFlag, effectValue.value);
     });
   } else {
     effectFlag = 'none';
   }
 
-  effectsContainer.addEventListener('change', switchFilter);
+  effectsContainer.addEventListener('change', onSwitchFilterChange);
 };
 
 export { initSlider, removeEffectsEvents, uploadBlock, imagePreview, effectNone };

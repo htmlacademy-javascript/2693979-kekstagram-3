@@ -28,13 +28,13 @@ const resetFormTextFields = () => {
   commentsText.value = '';
 };
 
-const stopPaginationEvent = (evt) => {
+const onStopPaginationKeydown = (evt) => {
   evt.stopPropagation();
 };
 
 const removeStopPaginationEvent = () => {
-  hashtagsInput.removeEventListener('keydown', stopPaginationEvent);
-  commentsText.removeEventListener('keydown', stopPaginationEvent);
+  hashtagsInput.removeEventListener('keydown', onStopPaginationKeydown);
+  commentsText.removeEventListener('keydown', onStopPaginationKeydown);
 };
 
 const blockSubmitButton = () => {
@@ -51,7 +51,7 @@ const setUserFormSubmit = () => {
   pristine.addValidator(hashtagsInput, validateHashtags, getHashtagsErrorMessage);
   pristine.addValidator(commentsText, validateCommentsText, getCommentsErrorMessage);
 
-  form.addEventListener('submit', submitForm);
+  form.addEventListener('submit', onFormSubmit);
 };
 
 const resetForm = (arrayArguments) => {
@@ -67,7 +67,7 @@ const resetForm = (arrayArguments) => {
   resetFormTextFields();
   removeStopPaginationEvent();
   pristine.reset();
-  form.removeEventListener('submit', submitForm);
+  form.removeEventListener('submit', onFormSubmit);
 };
 
 const resetFormObject = {
@@ -75,7 +75,7 @@ const resetFormObject = {
   arguments: [imageInput, imagePreview, effectsPreview]
 };
 
-function submitForm(evt) {
+function onFormSubmit(evt) {
   evt.preventDefault();
 
   const isValid = pristine.validate();
@@ -115,8 +115,8 @@ const initUploadForm = () => {
       scaleToImage();
       initSlider();
 
-      hashtagsInput.addEventListener('keydown', stopPaginationEvent);
-      commentsText.addEventListener('keydown', stopPaginationEvent);
+      hashtagsInput.addEventListener('keydown', onStopPaginationKeydown);
+      commentsText.addEventListener('keydown', onStopPaginationKeydown);
 
       createPopupCloseHandlers(editingBlock, formClose, resetFormObject);
       setUserFormSubmit();
